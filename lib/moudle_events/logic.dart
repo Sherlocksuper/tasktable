@@ -1,33 +1,19 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import '../config.dart';
-
+import '../Config/config.dart';
+import '../logic.dart';
 import 'state.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class ModuleEventsLogic extends GetxController {
   final ModuleEventsState state = ModuleEventsState();
+  final mainState = Get.find<MainLogic>().state;
 
-  Future<void> showNotificationWithActions() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'hat?',
-      '声音',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: true,
-    );
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    await FlutterLocalNotificationsPlugin().show(
-      0,
-      '你好，这是一个测试',
-      '这是body',
-      platformChannelSpecifics,
-      payload: 'item x',
-    );
-  }
+  String id = "1";
 
   //计算时间
   String calculateTime(DateTime startTime, DateTime endTime) {
@@ -102,14 +88,6 @@ class ModuleEventsLogic extends GetxController {
     //根据事件类型构建颜色
     Color buildColor(type) {
       switch (type) {
-        case Duration.YEAR:
-          return Colors.blue;
-        case Duration.MONTH:
-          return Colors.green;
-        case Duration.WEEK:
-          return Colors.yellow;
-        case Duration.DAY:
-          return Colors.red;
         default:
           return Colors.grey;
       }

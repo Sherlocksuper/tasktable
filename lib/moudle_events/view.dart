@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:timetable/logic.dart';
 import 'package:timetable/moudle_events/event_edit/view.dart';
-import 'package:timetable/moudle_events/state.dart' hide EventModel;
 import 'package:timetable/moudle_events/state.dart';
 import 'logic.dart';
 
@@ -17,33 +17,36 @@ class ModuleEventsPage extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<ModuleEventsLogic>(
         builder: (controller) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
-                  child: Text(
-                    'Appointment Reminders'.tr,
-                    style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+          return Padding(
+            padding: const EdgeInsets.only(top: 40, bottom: 20, left: 15, right: 15),
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
+                    child: Text(
+                      'Appointment Reminders'.tr,
+                      style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: Divider(),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Divider(),
+                  ),
                 ),
-              ),
-              SliverList.builder(
-                itemBuilder: (context, index) {
-                  return EventItem(
-                    eventModel: state.eventList[index] as EventModel,
-                  );
-                },
-                itemCount: state.eventList.length,
-              ),
-            ],
+                SliverList.builder(
+                  itemBuilder: (context, index) {
+                    return EventItem(
+                      eventModel: state.eventList[index] as EventModel,
+                    );
+                  },
+                  itemCount: state.eventList.length,
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -66,7 +69,9 @@ class EventItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.dialog(EventDialog(eventItem: eventModel));
+        // Get.dialog(EventDialog(eventItem: eventModel));
+        // Get.find<ModuleEventsLogic>().showNotificationWithActions();
+        Get.find<MainLogic>().showZoneSchedule();
       },
       onLongPress: () {},
       child: GetBuilder<ModuleEventsLogic>(
@@ -93,10 +98,6 @@ class EventItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                Get.find<ModuleEventsLogic>().buildDurationType(eventModel.type),
-                const SizedBox(
-                  width: 10,
                 ),
                 AutoSizeText(
                   Get.find<ModuleEventsLogic>().calculateTime(eventModel.startTime, eventModel.endTime),
@@ -130,13 +131,6 @@ class EventDialog extends StatelessWidget {
             Text(
               eventItem.title,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              eventItem.type.name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 10,

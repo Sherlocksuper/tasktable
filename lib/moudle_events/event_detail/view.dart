@@ -63,10 +63,7 @@ class DetailPage extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Get.find<ModuleEventsLogic>().buildDurationType(showModel.type),
-                    const SizedBox(
-                      width: 10,
-                    ),
+
                     Text(
                       Get.find<ModuleEventsLogic>().calculateTime(showModel.startTime, showModel.endTime),
                       style: const TextStyle(

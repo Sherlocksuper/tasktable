@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:timetable/Message.dart';
-import 'package:timetable/moudle_events/event_edit/view.dart';
+import 'package:timetable/Config/Message.dart';
 import 'package:timetable/moudle_events/logic.dart';
 import 'package:timetable/moudle_events/view.dart';
 import 'package:timetable/moudle_me/logic.dart';
 import 'package:timetable/moudle_me/view.dart';
 import 'package:timetable/moudle_today/logic.dart';
 import 'package:timetable/moudle_today/view.dart';
+import 'package:timetable/pic/view.dart';
+
+import 'logic.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +26,16 @@ class MyApp extends StatelessWidget {
       locale: const Locale('zh', 'CN'),
       fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home: PicPage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+  MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ModuleEventsLogic());
-    Get.put(ModuleCalendarLogic());
-    Get.put(ModuleMeLogic());
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(

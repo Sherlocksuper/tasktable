@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../config.dart';
+import '../Config/config.dart';
 
 class ModuleEventsState {
   ModuleEventsState() {
@@ -24,7 +24,6 @@ class EventModel {
   //重要程度
   // 0: 无 1: 低 2: 中 3: 高
   var importance = ImportantLevel.LOW;
-  var type = Duration.DAY;
 
   //事件时间和结束时间
   DateTime startTime = DateTime(2023, 12, 7);

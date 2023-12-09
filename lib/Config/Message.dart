@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:timetable/config.dart';
+import 'package:timetable/Config/config.dart';
 
 class Messages extends Translations {
   @override
@@ -13,10 +13,6 @@ class Messages extends Translations {
           'Pop-up': '弹窗',
           'Language': '语言',
           'Remind': '提醒',
-          Duration.YEAR.name: '年事件',
-          Duration.MONTH.name: '月事件',
-          Duration.WEEK.name: '周事件',
-          Duration.DAY.name: '日事件',
           ImportantLevel.LOW.name: '低',
           ImportantLevel.MIDDLE.name: '中',
           ImportantLevel.HIGH.name: '高',
