@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:timetable/logic.dart';
+import 'package:timetable/moudle_event/logic.dart';
 
 import 'logic.dart';
 
@@ -32,10 +34,7 @@ class ModuleMePage extends StatelessWidget {
                     title: Text('Language'.tr),
                     trailing: Text(state.meModel.language),
                     onTap: () {
-                      state.meModel.language == 'English'
-                          ? state.meModel.language = '中文'
-                          : state.meModel.language = 'English';
-                      Get.updateLocale(Locale(state.meModel.language == 'English' ? 'en' : 'zh'));
+                      logic.changeLanguage(state.meModel.language == 'English' ? '中文' : 'English');
                     },
                   ),
                   //分割
@@ -43,6 +42,33 @@ class ModuleMePage extends StatelessWidget {
                   //提前提醒时间
                   buildRemind(),
                   const SizedBox(height: 20),
+                  //清空数据
+                  ListTile(
+                    title: Text('Clear Data'.tr),
+                    onTap: () {
+                      Get.dialog(
+                        AlertDialog(
+                          title: Text('Clear Data'.tr),
+                          content: Text('Are you sure you want to clear all data?'.tr),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text('Cancel'.tr),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                logic.clearData();
+                                Get.back();
+                              },
+                              child: Text('Confirm'.tr),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

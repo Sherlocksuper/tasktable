@@ -30,6 +30,10 @@ class Messages extends Translations {
           "End Time": "结束时间",
           "Today's Tasks": "今日任务",
           "Appointment Reminders": "预约提醒",
+          "Clear Data": "清空数据",
+          'Are you sure you want to clear all data?': '你确定要清空所有数据吗？',
+          'Clear': '清空',
+          'Are you sure you want to delete this event?': "你确定要删除这个事件吗",
         },
       };
 }

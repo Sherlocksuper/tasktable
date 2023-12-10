@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:timetable/Config/Message.dart';
-import 'package:timetable/moudle_events/logic.dart';
-import 'package:timetable/moudle_events/view.dart';
-import 'package:timetable/moudle_me/logic.dart';
+import 'package:timetable/event_edit/view.dart';
+import 'package:timetable/moudle_event/view_events.dart';
+import 'package:timetable/moudle_event/view_today.dart';
 import 'package:timetable/moudle_me/view.dart';
-import 'package:timetable/moudle_today/logic.dart';
-import 'package:timetable/moudle_today/view.dart';
 import 'package:timetable/pic/view.dart';
-
-import 'logic.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +46,19 @@ class MyHomePage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ModuleCalendarPage(),
+            ModuleTodayPage(),
             ModuleEventsPage(),
             ModuleMePage(),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.to(() => EventEditPage());
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }

@@ -1,21 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:timetable/logic.dart';
-import 'package:timetable/moudle_events/event_edit/view.dart';
-import 'package:timetable/moudle_events/state.dart';
-import 'logic.dart';
+import 'package:timetable/moudle_event/logic.dart';
+import 'package:timetable/moudle_event/state.dart';
 
-class ModuleEventsPage extends StatelessWidget {
-  ModuleEventsPage({Key? key}) : super(key: key);
+abstract class EventListBasePage extends StatelessWidget {
+  const EventListBasePage({Key? key}) : super(key: key);
 
-  final logic = Get.put(ModuleEventsLogic());
-  final state = Get.find<ModuleEventsLogic>().state;
+  List<EventModel> getEventList();
+
+  String get title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<ModuleEventsLogic>(
+      body: GetBuilder<ModuleEventLogic>(
         builder: (controller) {
           return Padding(
             padding: const EdgeInsets.only(top: 40, bottom: 20, left: 15, right: 15),
@@ -26,7 +26,7 @@ class ModuleEventsPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
                     child: Text(
-                      'Appointment Reminders'.tr,
+                      title.tr,
                       style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -40,21 +40,15 @@ class ModuleEventsPage extends StatelessWidget {
                 SliverList.builder(
                   itemBuilder: (context, index) {
                     return EventItem(
-                      eventModel: state.eventList[index] as EventModel,
+                      eventModel: getEventList()[index],
                     );
                   },
-                  itemCount: state.eventList.length,
+                  itemCount: getEventList().length,
                 ),
               ],
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => EventEditPage(), arguments: ["LONG-TERM"]);
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -69,12 +63,32 @@ class EventItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Get.dialog(EventDialog(eventItem: eventModel));
-        // Get.find<ModuleEventsLogic>().showNotificationWithActions();
-        Get.find<MainLogic>().showZoneSchedule();
+        Get.dialog(EventDialog(eventItem: eventModel));
       },
-      onLongPress: () {},
-      child: GetBuilder<ModuleEventsLogic>(
+      onLongPress: () {
+        Get.dialog(
+          AlertDialog(
+            title: Text('Delete'.tr),
+            content: Text('Are you sure you want to delete this event?'.tr),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text('Cancel'.tr),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.find<ModuleEventLogic>().deleteEvent(eventModel);
+                  Get.back();
+                },
+                child: Text('Confirm'.tr),
+              ),
+            ],
+          ),
+        );
+      },
+      child: GetBuilder<ModuleEventLogic>(
         builder: (controller) {
           return Container(
             margin: const EdgeInsets.only(top: 20),
@@ -86,13 +100,13 @@ class EventItem extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Get.find<ModuleEventsLogic>().buildImportanceIcon(eventModel.importance),
+                Get.find<ModuleEventLogic>().buildImportanceIcon(eventModel.importance),
                 const SizedBox(
                   width: 20,
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    eventModel.title,
+                    eventModel.title.tr,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -100,7 +114,7 @@ class EventItem extends StatelessWidget {
                   ),
                 ),
                 AutoSizeText(
-                  Get.find<ModuleEventsLogic>().calculateTime(eventModel.startTime, eventModel.endTime),
+                  Get.find<ModuleEventLogic>().calculateTime(eventModel.startTime, eventModel.endTime),
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -117,7 +131,7 @@ class EventItem extends StatelessWidget {
 class EventDialog extends StatelessWidget {
   final EventModel eventItem;
 
-  EventDialog({super.key, required this.eventItem});
+  const EventDialog({super.key, required this.eventItem});
 
   @override
   Widget build(BuildContext context) {
@@ -132,30 +146,22 @@ class EventDialog extends StatelessWidget {
               eventItem.title,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const Gap(10),
             Text(
               eventItem.isDone ? "已完成" : "未完成",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const Gap(10),
             Text(
               "开始于：${eventItem.startTime.year}年 ${eventItem.startTime.month}月${eventItem.startTime.day}日",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const Gap(10),
             Text(
               "结束于：${eventItem.endTime.year}年 ${eventItem.endTime.month}月${eventItem.endTime.day}日",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const Gap(10),
             Text(
               eventItem.content,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

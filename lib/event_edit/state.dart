@@ -1,5 +1,4 @@
-import 'package:timetable/moudle_events/state.dart';
-import 'package:timetable/moudle_events/view.dart';
+import '../moudle_event/state.dart';
 
 class EventEditState {
   EventEditState() {

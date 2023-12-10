@@ -71,4 +71,9 @@ class MainLogic extends GetxController {
                 vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]))),
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime);
   }
+
+  //写入配置文件
+  Future<void> writeConfig() async {
+
+  }
 }

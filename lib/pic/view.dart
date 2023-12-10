@@ -14,8 +14,9 @@ class PicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      Get.off(() => MyHomePage());
+    //Timer只运行一次
+    Timer(const Duration(seconds: 1), () {
+      Get.offAll(() => MyHomePage());
     });
     return const Scaffold(
       body: Center(
